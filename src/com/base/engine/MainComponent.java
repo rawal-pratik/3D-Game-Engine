@@ -5,23 +5,75 @@ public class MainComponent {
 	public static final int WIDTH = 1920;
 	public static final int HEIGHT = 1080;
 	public static final String TITLE = "3D Engine";
+	private boolean isRunning = false;
+	public static final double FRAME_CAP = 5000.0;
 	
 	public MainComponent() {
 		
 	}
 	
 	public void start() {
+		if(isRunning)
+			return;
+		
 		run();
 	}
 	
 	public void stop() {
-		
+		if(!isRunning)
+			return;
+		isRunning = false;
 	}
 	
 	private void run() {
-		while(!Window.isCloseRequested()) {
-			render();
+		
+		int frames = 0;
+		long frameCounter = 0;
+		
+		isRunning = true;
+		
+		final double frameTime = 1.0/FRAME_CAP;
+		
+		long lastTime = Time.getTime();
+		double unprocessedTime = 0;
+		
+		while (isRunning) {
+			boolean render = false;
+			
+			long startTime = Time.getTime();
+			long passedTime = startTime - lastTime;
+			lastTime = startTime;
+			
+			unprocessedTime+=passedTime/(double)Time.SECOND;
+			frameCounter += passedTime;
+			
+			while(unprocessedTime>frameTime) {
+				render = true;
+				unprocessedTime -= frameTime;
+							
+				if(Window.isCloseRequested())
+					stop();
+				
+				if(frameCounter >= Time.SECOND) {
+					System.out.println(frames);
+					frames = 0;
+					frameCounter = 0;
+				}
+			}
+			
+			if(render) {
+				render();
+				frames++;
+			}
+			else {
+				try {
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 		}
+		cleanUp();
 	}
 	
 	private void render() {
@@ -29,8 +81,10 @@ public class MainComponent {
 	}
 	
 	private void cleanUp() {
-		
+		Window.dispose();
 	}
+	
+	
 	
 	public static void main(String[] args) {
 		
