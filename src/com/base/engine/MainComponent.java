@@ -2,14 +2,16 @@ package com.base.engine;
 
 public class MainComponent {
 	
-	public static final int WIDTH = 1920;
-	public static final int HEIGHT = 1080;
+	public static final int WIDTH = 800;
+	public static final int HEIGHT = 800;
 	public static final String TITLE = "3D Engine";
 	private boolean isRunning = false;
 	public static final double FRAME_CAP = 5000.0;
+	private Game game;
 	
 	public MainComponent() {
-		
+		isRunning = false;
+		game = new Game();
 	}
 	
 	public void start() {
@@ -54,6 +56,12 @@ public class MainComponent {
 				if(Window.isCloseRequested())
 					stop();
 				
+				Time.setDelta(frameTime);
+				Input.update();
+				
+				game.input();
+				game.update();
+				
 				if(frameCounter >= Time.SECOND) {
 					System.out.println(frames);
 					frames = 0;
@@ -77,6 +85,7 @@ public class MainComponent {
 	}
 	
 	private void render() {
+		game.render();
 		Window.render();
 	}
 	
