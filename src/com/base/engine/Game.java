@@ -16,7 +16,7 @@ public class Game {
 			System.out.println("Released W");
 		
 		if(Input.getMouseDown(1))
-			System.out.println("Pressed Right Click");
+			System.out.println("Pressed Right Click at "+Input.getMousePosition().toString());
 		
 		if(Input.getMouseUp(Keyboard.KEY_W))
 			System.out.println("Released Right Click");
