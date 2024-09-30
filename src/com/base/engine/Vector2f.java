@@ -27,13 +27,11 @@ public class Vector2f {
 	}
 	
 	public Vector2f rotate(float angle) {
-		double rad = (double))Math.toRadians(angle);
+		double rad = (double)Math.toRadians(angle);
 		double cos = (double)Math.cos(rad);
 		double sin = (double)Math.sin(rad);
 		
 		return new Vector2f((float)(x * cos - y * sin),(float)(x * sin + y * cos));
-		
-		return null;
 	}
 	
 	public Vector2f add(Vector2f r) {
